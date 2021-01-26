@@ -170,7 +170,7 @@ def thread_listen_connection(sock, selector):
 server_connection = {"dh_handshake": False, "have_dh_parameters": False}
 if __name__ == "__main__":
     #my name
-    my_name = input("whats your name: ")
+    my_name = input("whats your name:")
     #create selector
     selector = selectors.DefaultSelector()
     #create socket
