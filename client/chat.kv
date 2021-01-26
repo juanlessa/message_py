@@ -1,0 +1,250 @@
+<ChatPage>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source:'./images/chatwallpaper.jpeg'
+    BoxLayout:
+        canvas:
+            Color: 
+                rgba:0.105, 0.227, 0.635, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        size_hint_y:None
+        height:50
+        Label:
+            text: "Chat"
+    BoxLayout:
+        ScrollView:
+            BoxLayout:
+                id:messagesbox
+                orientation: 'vertical'
+                size_hint_y:None
+                height: self.minimum_height
+                Widget:
+    BoxLayout:
+        size_hint_y:None
+        height: 60
+        padding: 13,5,7,5
+        BoxLayout:
+            TextInput:
+                id:keyboard_inputs
+                font_size: '14pt'
+                padding:20,10,30,0
+                background_color: 0,0,0,0
+                cursor_color: 1, 1, 1, 1
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                canvas.after:
+               
+                    Color:
+                        rgba: 63/255.0, 146/255.0, 219/255.0, 1
+                    Line:
+                        points: self.pos[0]+ 20 , self.pos[1], self.pos[0] + self.size[0] - 30, self.pos[1]
+                    Line:
+                        points: self.pos[0] +20, self.pos[1] + self.size[1], self.pos[0] + self.size[0] - 30, self.pos[1] + self.size[1]
+                    Line:
+                        ellipse: self.pos[0] - self.size[1]/2.0 +20, self.pos[1], self.size[1], self.size[1], 180, 360
+                    Line:
+                        ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0 -30, self.pos[1], self.size[1], self.size[1], 360, 540
+
+        Button:
+            size_hint_x:None
+            width: self.height
+            background_normal: './images/send.ico'
+            border: 0,0,0,0
+            on_release: root.btn_send_clicked()
+
+
+<Message@BoxLayout>:
+    orientation: 'vertical'
+    padding:'10dp','10dp','60dp','10dp'
+    size_hint_y:None
+    height: self.ids.mes.height + self.ids.hourbox.height + self.ids.author.height + 20
+    canvas:
+        Color: 
+            rgba:234/255.0,235/255.0,240/255.0,1
+        Ellipse:
+            pos: self.x, self.y+self.height/2.0 + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x, self.y + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0 - 50,self.y + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0 - 50,self.y + self.height/2.0 + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Rectangle:
+            pos: self.x,self.y + self.height/4.0 + 2
+            size:self.width-50,self.height/2.0 - 4
+        Rectangle:
+            pos: self.x + self.height/4.0, self.y + self.height/2.0 + 5
+            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
+        Rectangle:
+            pos: self.x + self.height/4.0, self.y + 5
+            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
+    Label:
+        id:author
+        text:'author'
+        bold: True
+        color: 0,0,0,1 
+        font_size: '11pt'
+        text_size: self.width, self.height
+        halign: 'left'
+        valign: 'top'
+        size_hint_y:None
+        height:20
+    Label:
+        id:mes
+        text: "A"
+        color: 0,0,0,1 
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+        halign: 'left'
+        valign: 'top'
+        font_size: '11pt'
+    BoxLayout:
+        id:hourbox
+        #padding: 0,0,20,10
+        size_hint_y: None
+        height: 20
+        Label:
+            id:hour
+            text: '18:18'
+            color: 0,0,0,1 
+            font_size: '9pt'
+            text_size: self.size
+            valign: 'top'
+            halign: 'right'
+
+<MessageWithoutAuthor@BoxLayout>:
+    orientation: 'vertical'
+    padding:'10dp','10dp','60dp','10dp'
+    size_hint_y:None
+    height: self.ids.mes.height + self.ids.hourbox.height + 20
+    canvas:
+        Color: 
+            rgba:234/255.0,235/255.0,240/255.0,1
+        Ellipse:
+            pos: self.x, self.y+self.height/2.0
+            size: self.height/2.0,self.height/2.0
+        Ellipse:
+            pos: self.x, self.y + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0 - 50,self.y + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0 - 50,self.y + self.height/2.0 
+            size: self.height/2.0,self.height/2.0
+        Rectangle:
+            pos: self.x,self.y + self.height/4.0 + 2
+            size:self.width-50,self.height/2.0 - 4
+        Rectangle:
+            pos: self.x + self.height/4.0, self.y + self.height/2.0
+            size: self.width - self.height/2.0 - 50, self.height/2.0
+        Rectangle:
+            pos: self.x + self.height/4.0, self.y + 5
+            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
+    Label:
+        id:mes
+        text: "A"
+        color: 0,0,0,1 
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+        halign: 'left'
+        valign: 'top'
+        font_size: '11pt'
+    BoxLayout:
+        id:hourbox
+        #padding: 0,0,20,10
+        size_hint_y: None
+        height: 20
+        Label:
+            id:hour
+            text: '18:18'
+            color: 0,0,0,1 
+            font_size: '9pt'
+            text_size: self.size
+            valign: 'top'
+            halign: 'right'
+            
+
+
+<Mymessage@BoxLayout>:
+    orientation: 'vertical'
+    padding:'60dp','10dp','10dp','10dp'
+    size_hint_y:None
+    height: self.ids.mes.height + self.ids.hourbox.height + 20
+    canvas:
+        Color: 
+            rgba:0.105, 0.227, 0.9, 1
+        Ellipse:
+            pos: self.x + 50, self.y+self.height/2.0 + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + 50, self.y + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0,self.y + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0,self.y + self.height/2.0 + 5
+            size: self.height/2.0,self.height/2.0 - 10
+        Rectangle:
+            pos: self.x + 50, self.y + self.height/4.0 + 2
+            size:self.width-50,self.height/2.0 - 4
+        Rectangle:
+            pos: self.x + self.height/4.0 + 50, self.y + self.height/2.0 + 5
+            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
+        Rectangle:
+            pos: self.x + self.height/4.0 + 50, self.y + 5
+            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
+    
+    Label:
+        id:mes
+        text: "A" 
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+        halign: 'left'
+        valign: 'top'
+        font_size: '11pt'
+    BoxLayout:
+        id:hourbox
+        #padding: 0,0,20,10
+        size_hint_y: None
+        height: 20
+        Label:
+            id:hour
+            text: '18:18'
+            font_size: '9pt'
+            text_size: self.size
+            valign: 'top'
+            halign: 'right'
+            
+
+<Servernots@BoxLayout>:
+    orientation: 'vertical'
+    padding:'60dp','10dp','10dp','10dp'
+    size_hint_y:None
+    height: self.ids.mes.height + 20
+    Label:
+        id:mes
+        text: "A"
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+        halign: 'center'
+        valign: 'middle'
+        font_size: '11pt'
+    
