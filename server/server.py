@@ -63,7 +63,7 @@ def do_CDHN(conn, data, client_infos):
     #send chat informations to client
     #first client
     if len(clients_connection) == 1:
-        data = "you are alone on server, wait other connections"
+        data = "you are alone on server, wait other participants"
     #chat already has more clients
     else:
         #say to new client who already is connected
@@ -125,7 +125,7 @@ def read(conn, mask):
     #empty data closing client connection
     else:
         logger.info('closing {}'.format(client_infos["addr"]))
-        response = "{} leave om chat".format(client_infos["name"])
+        response = "{} leave on chat".format(client_infos["name"])
         clients_connection.remove(conn)
         del clients_information[conn]
         sel.unregister(conn)
