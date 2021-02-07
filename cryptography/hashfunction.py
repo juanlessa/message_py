@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 from cryptography.hazmat.primitives import hashes
 
-
 def hash(sorceFile_name, hashFunction_name):
     #define hash funcition
     if hashFunction_name == "MD5":
