@@ -1,250 +1,544 @@
-<ChatPage>:
-    orientation: 'vertical'
-    canvas:
-        Color:
-            rgba: 1,1,1,1
-        Rectangle:
-            size: self.size
-            pos: self.pos
-            source:'./images/chatwallpaper.jpeg'
+<Manager>:
+    LandingPage:
+    ChatPage:
+
+
+<LandingPage>:
+    name: "landingpage"
     BoxLayout:
         canvas:
-            Color: 
-                rgba:0.105, 0.227, 0.635, 1
+            Color:
+                rgba:  7/255.0, 94/255.0, 84/255.0, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
-        size_hint_y:None
-        height:50
-        Label:
-            text: "Chat"
-    BoxLayout:
-        ScrollView:
-            BoxLayout:
-                id:messagesbox
-                orientation: 'vertical'
-                size_hint_y:None
-                height: self.minimum_height
-                Widget:
-    BoxLayout:
-        size_hint_y:None
-        height: 60
-        padding: 13,5,7,5
+        padding: sp(50)
+        orientation: 'vertical'
         BoxLayout:
-            TextInput:
-                id:keyboard_inputs
-                font_size: '14pt'
-                padding:20,10,30,0
-                background_color: 0,0,0,0
-                cursor_color: 1, 1, 1, 1
-                canvas.before:
-                    Color:
-                        rgba: 1, 1, 1, 1
-                canvas.after:
-               
-                    Color:
-                        rgba: 63/255.0, 146/255.0, 219/255.0, 1
-                    Line:
-                        points: self.pos[0]+ 20 , self.pos[1], self.pos[0] + self.size[0] - 30, self.pos[1]
-                    Line:
-                        points: self.pos[0] +20, self.pos[1] + self.size[1], self.pos[0] + self.size[0] - 30, self.pos[1] + self.size[1]
-                    Line:
-                        ellipse: self.pos[0] - self.size[1]/2.0 +20, self.pos[1], self.size[1], self.size[1], 180, 360
-                    Line:
-                        ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0 -30, self.pos[1], self.size[1], self.size[1], 360, 540
+            size_hint_y: 2
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                size_hint_y:2
+                Label:
+                    text: "what's your name ?"
+            BoxLayout:
+                size_hint_y: 2
+            BoxLayout:
+                size_hint_y: 1
+                TextInput:
+                    id:myname
+                    padding: sp(10),sp(5),0,0
+                    font_size: sp(18)
+                    size_hint_x:1
+                    size_hint_y:3
+                    multiline: False
+                    background_color: 0, 0, 0, 0
+                    foreground_color: 0, 0, 0, 1
+                    canvas.before:  
+                        Color:
+                            rgba: 1, 1, 1, 1
 
-        Button:
-            size_hint_x:None
-            width: self.height
-            background_normal: './images/send.ico'
-            border: 0,0,0,0
-            on_release: root.btn_send_clicked()
+                        #left
+                        Ellipse:
+                            pos: self.x, self.y
+                            size: self.height, self.height
+                        #right
+                        Ellipse:
+                            pos: self.x + self.width - self.height, self.y
+                            size: self.height, self.height
+                        #meddle
+                        Rectangle:
+                            pos: self.x + self.height/2.0, self.y
+                            size: self.width - self.height, self. height
+                        Color:
+                            rgba: 0, 0, 0, 1
 
+            BoxLayout:
+                size_hint_y:1
+            BoxLayout:
+                size_hint_y:3
+                BtnOk:
+                    text: "OK"
+                    on_release: root.start_chat(self)
+        BoxLayout:
+            size_hint_y: 3
 
-<Message@BoxLayout>:
-    orientation: 'vertical'
-    padding:'10dp','10dp','60dp','10dp'
-    size_hint_y:None
-    height: self.ids.mes.height + self.ids.hourbox.height + self.ids.author.height + 20
+<BtnOk@ButtonBehavior+Label>
+    canvas.before:
+        Color:
+            rgba: 37/255.0, 211/255.0, 102/255.0, 1
+        #left
+        Ellipse:
+            pos: self.x, self.y
+            size: self.height, self.height
+        #right
+        Ellipse:
+            pos: self.x + self.width - self.height, self.y
+            size: self.height, self.height
+        #meddle
+        Rectangle:
+            pos: self.x + self.height/2.0, self.y
+            size: self.width - self.height, self. height
+#########################################################################################################33
+<ChatPage>:
+    name: "chatpage"
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color:
+                rgba: 1,1,1,0.4
+            Rectangle:
+                size: self.size
+                pos: self.pos
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                source:'./images/background.jpg'
+        # NavBar
+        #NavBar:
+        # messages
+        BoxLayout:
+            ScrollView:
+                BoxLayout:
+                    id:messagesbox
+                    orientation: 'vertical'
+                    size_hint_y:None
+                    height: self.minimum_height
+             
+                    Widget:
+        # text input and send button
+        InputMessages:
+            id:iptmes
+
+############################################################
+
+<NavBar@BoxLayout>:
     canvas:
         Color: 
-            rgba:234/255.0,235/255.0,240/255.0,1
-        Ellipse:
-            pos: self.x, self.y+self.height/2.0 + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x, self.y + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + self.width - self.height/2.0 - 50,self.y + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + self.width - self.height/2.0 - 50,self.y + self.height/2.0 + 5
-            size: self.height/2.0,self.height/2.0 - 10
+            rgba: 7/255.0, 94/255.0, 84/255.0, 1
         Rectangle:
-            pos: self.x,self.y + self.height/4.0 + 2
-            size:self.width-50,self.height/2.0 - 4
-        Rectangle:
-            pos: self.x + self.height/4.0, self.y + self.height/2.0 + 5
-            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
-        Rectangle:
-            pos: self.x + self.height/4.0, self.y + 5
-            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
+            size: self.size
+            pos: self.pos
+        # Color:
+        #     rgba:0,0,0,1
+        # Line:
+        #     points: self.x, self.y, self.size[0], self.pos[1]
+    
+    size_hint_y:None
+    height:50
     Label:
-        id:author
-        text:'author'
-        bold: True
-        color: 0,0,0,1 
-        font_size: '11pt'
-        text_size: self.width, self.height
-        halign: 'left'
-        valign: 'top'
-        size_hint_y:None
-        height:20
-    Label:
-        id:mes
-        text: "A"
-        color: 0,0,0,1 
-        size_hint_y: None
-        height: self.texture_size[1]
-        text_size: self.width, None
-        halign: 'left'
-        valign: 'top'
-        font_size: '11pt'
+        text: ""
+        font_size: "26dp"
+
+############################################################
+
+<Message>:
+    size_hint_y: None
+    height: self.minimum_height
+    # message
     BoxLayout:
-        id:hourbox
-        #padding: 0,0,20,10
-        size_hint_y: None
-        height: 20
+        padding: 10,15,10,5
+        orientation: "vertical"
+        size_hint_x:15
+        size_hint_y:None
+        height: root.ids.mes.height + root.ids.author.height + root.ids.hour.height + 20
+        
+        canvas.before:
+            Color:
+                rgba:234/255.0,235/255.0,240/255.0,1
+            #botton left
+            Ellipse:
+                pos: self.x, self.y
+                size: self.height/2.0,self.height/2.0
+            #top left
+            Ellipse:
+                pos: self.x, self.y + self.height/2.0 - 10
+                size: self.height/2.0,self.height/2.0 
+            #botton right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y
+                size: self.height/2.0,self.height/2.0
+            #top right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y + self.height/2.0  -10
+                size: self.height/2.0,self.height/2.0
+            #meddle
+            Rectangle:
+                pos: self.x, self.y + self.height/4.0
+                size: self.width, self.height/2.0 - 10
+            #botton
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y 
+                size: self.width - self.height/2.0 , self.height/2.0
+            #top
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y + self.height/2.0 -10
+                size: self.width - self.height/2.0 , self.height/2.0
+
+
+        Label:
+            id:author
+            text:'author'
+            bold: True
+            color: 0,0,0,1 
+            font_size: '11pt'
+            text_size: self.width, self.height
+            halign: 'left'
+            valign: 'top'
+            size_hint_y:None
+            height:20
+        Label:
+            id:mes
+            text: "A"
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            valign: 'top'
+            font_size: '11pt'
         Label:
             id:hour
             text: '18:18'
             color: 0,0,0,1 
-            font_size: '9pt'
-            text_size: self.size
-            valign: 'top'
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
             halign: 'right'
+            valign: 'top'
+            font_size: '9pt'
+    # space
+    BoxLayout:
+        size_hint_x:1
+        
 
-<MessageWithoutAuthor@BoxLayout>:
-    orientation: 'vertical'
-    padding:'10dp','10dp','60dp','10dp'
+<MessageWithoutAuthor>:
+    size_hint_y: None
+    height: self.minimum_height
+    # message
+    BoxLayout:
+        padding: 10,15,10,5
+        orientation: "vertical"
+        size_hint_x:15
+        size_hint_y:None
+        height: root.ids.mes.height + root.ids.hour.height + 20
+        
+        canvas.before:
+            Color:
+                rgba:234/255.0,235/255.0,240/255.0,1
+            #botton left
+            Ellipse:
+                pos: self.x, self.y
+                size: self.height/2.0,self.height/2.0
+            #top left
+            Ellipse:
+                pos: self.x, self.y + self.height/2.0 - 5
+                size: self.height/2.0,self.height/2.0 
+            #botton right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y
+                size: self.height/2.0,self.height/2.0
+            #top right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y + self.height/2.0  -5
+                size: self.height/2.0,self.height/2.0
+            #meddle
+            Rectangle:
+                pos: self.x, self.y + self.height/4.0
+                size: self.width, self.height/2.0 - 5
+            #botton
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y 
+                size: self.width - self.height/2.0 , self.height/2.0
+            #top
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y + self.height/2.0 -5
+                size: self.width - self.height/2.0 , self.height/2.0
+
+        Label:
+            id:mes
+            text: "A"
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            valign: 'top'
+            font_size: '11pt'
+        Label:
+            id:hour
+            text: '18:18'
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'right'
+            valign: 'top'
+            font_size: '9pt'
+    # space
+    BoxLayout:
+        size_hint_x:1
+        
+#############################################################
+
+<MyMessage>:
+    size_hint_y: None
+    height: self.minimum_height
+    # space
+    BoxLayout:
+        size_hint_x:1
+    # message
+    BoxLayout:
+        padding: 10,15,10,5
+        orientation: "vertical"
+        size_hint_x:15
+        size_hint_y:None
+        height: root.ids.mes.height + root.ids.hour.height + 20
+        
+        canvas.before:
+            Color:
+                rgba: 220/255.0, 248/255.0, 198/255.0, 1
+            #botton left
+            Ellipse:
+                pos: self.x, self.y
+                size: self.height/2.0,self.height/2.0
+            #top left
+            Ellipse:
+                pos: self.x, self.y + self.height/2.0 - 5
+                size: self.height/2.0,self.height/2.0 
+            #botton right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y
+                size: self.height/2.0,self.height/2.0
+            #top right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y + self.height/2.0  -5
+                size: self.height/2.0,self.height/2.0
+            #meddle
+            Rectangle:
+                pos: self.x, self.y + self.height/4.0
+                size: self.width, self.height/2.0 - 5
+            #botton
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y 
+                size: self.width - self.height/2.0 , self.height/2.0
+            #top
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y + self.height/2.0 -5
+                size: self.width - self.height/2.0 , self.height/2.0
+
+        Label:
+            id:mes
+            text: "A"
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            valign: 'top'
+            font_size: '11pt'
+        Label:
+            id:hour
+            text: '18:18'
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'right'
+            valign: 'top'
+            font_size: '9pt'
+
+
+<MyMessageSequence>:
+    size_hint_y: None
+    height: self.minimum_height
+    # space
+    BoxLayout:
+        size_hint_x:1
+    # message
+    BoxLayout:
+        padding: 10,15,10,5
+        orientation: "vertical"
+        size_hint_x:15
+        size_hint_y:None
+        height: root.ids.mes.height + root.ids.hour.height + 20
+        
+        canvas.before:
+            Color:
+                rgba: 220/255.0, 248/255.0, 198/255.0, 1
+            #botton left
+            Ellipse:
+                pos: self.x, self.y
+                size: self.height/2.0,self.height/2.0
+            #top left
+            Ellipse:
+                pos: self.x, self.y + self.height/2.0 - 10
+                size: self.height/2.0,self.height/2.0 
+            #botton right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y
+                size: self.height/2.0,self.height/2.0
+            #top right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y + self.height/2.0  -10
+                size: self.height/2.0,self.height/2.0
+            #meddle
+            Rectangle:
+                pos: self.x, self.y + self.height/4.0
+                size: self.width, self.height/2.0 - 10
+            #botton
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y 
+                size: self.width - self.height/2.0 , self.height/2.0
+            #top
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y + self.height/2.0 -10
+                size: self.width - self.height/2.0 , self.height/2.0
+
+
+        Label:
+            id:mes
+            text: "A"
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'left'
+            valign: 'top'
+            font_size: '11pt'
+        Label:
+            id:hour
+            text: '18:18'
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'right'
+            valign: 'top'
+            font_size: '9pt'
+    
+        
+ #############################################################
+<ServerNotifications>:
+    size_hint_y: None
+    height: self.minimum_height
+    BoxLayout:
+        size_hint_x:1
+    BoxLayout:
+        padding: sp(10),sp(5),sp(10),sp(5)
+        orientation: "vertical"
+        size_hint_y:None
+        height: root.ids.mes.height + 20
+        size_hint_x:5
+        canvas.before:
+            Color:
+                rgba: 52/255.0, 183/255.0, 241/255.0, 1            
+                #botton left
+            #botton left
+            Ellipse:
+                pos: self.x, self.y
+                size: self.height/2.0,self.height/2.0
+            #top left
+            Ellipse:
+                pos: self.x, self.y + self.height/2.0 - 10
+                size: self.height/2.0,self.height/2.0 
+            #botton right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y
+                size: self.height/2.0,self.height/2.0
+            #top right
+            Ellipse:
+                pos: self.x + self.width - self.height/2.0, self.y + self.height/2.0  -10
+                size: self.height/2.0,self.height/2.0
+            #meddle
+            Rectangle:
+                pos: self.x, self.y + self.height/4.0
+                size: self.width, self.height/2.0 - 10
+            #botton
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y 
+                size: self.width - self.height/2.0 , self.height/2.0
+            #top
+            Rectangle:
+                pos: self.x + self.height/4.0, self.y + self.height/2.0 -10
+                size: self.width - self.height/2.0 , self.height/2.0
+
+        Label:
+            id:mes
+            text: "A"
+            color: 0,0,0,1 
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            halign: 'center'
+            valign: 'middle'
+            font_size: '11pt'
+    BoxLayout:
+        size_hint_x:1
+            
+
+#############################################################
+<InputMessages@BoxLayout>:
     size_hint_y:None
-    height: self.ids.mes.height + self.ids.hourbox.height + 20
-    canvas:
-        Color: 
-            rgba:234/255.0,235/255.0,240/255.0,1
+    padding: sp(5),sp(5),0,sp(5)
+    height: self.ids.keyboard_inputs.height + sp(10)
+    Input:
+        id:keyboard_inputs
+    SendButton:
+
+<Input@TextInput>:
+    font_size: sp(20)
+    size_hint_x:1
+    size_hint_y:None
+    height: sp(40) if self.minimum_height <= sp(40) else self.minimum_height if self.minimum_height <= sp(105) else sp(105)
+    multiline: True
+    background_color: 0, 0, 0, 0
+    foreground_color: 0, 0, 0, 1
+
+    canvas.before:  
+        Color:
+            rgba: 1, 1, 1, 1
+        #botton left
         Ellipse:
-            pos: self.x, self.y+self.height/2.0
+            pos: self.x, self.y
             size: self.height/2.0,self.height/2.0
+        #top left
         Ellipse:
-            pos: self.x, self.y + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + self.width - self.height/2.0 - 50,self.y + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + self.width - self.height/2.0 - 50,self.y + self.height/2.0 
+            pos: self.x, self.y + self.height/2.0   
             size: self.height/2.0,self.height/2.0
+        #botton right
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0, self.y
+            size: self.height/2.0,self.height/2.0
+        #top right
+        Ellipse:
+            pos: self.x + self.width - self.height/2.0, self.y + self.height/2.0   
+            size: self.height/2.0,self.height/2.0
+        #meddle
         Rectangle:
-            pos: self.x,self.y + self.height/4.0 + 2
-            size:self.width-50,self.height/2.0 - 4
+            pos: self.x, self.y + self.height/4.0
+            size: self.width, self.height/2.0
+        #botton
+        Rectangle:
+            pos: self.x + self.height/4.0, self.y 
+            size: self.width - self.height/2.0 , self.height/2.0
+        #top
         Rectangle:
             pos: self.x + self.height/4.0, self.y + self.height/2.0
-            size: self.width - self.height/2.0 - 50, self.height/2.0
-        Rectangle:
-            pos: self.x + self.height/4.0, self.y + 5
-            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
-    Label:
-        id:mes
-        text: "A"
-        color: 0,0,0,1 
-        size_hint_y: None
-        height: self.texture_size[1]
-        text_size: self.width, None
-        halign: 'left'
-        valign: 'top'
-        font_size: '11pt'
-    BoxLayout:
-        id:hourbox
-        #padding: 0,0,20,10
-        size_hint_y: None
-        height: 20
-        Label:
-            id:hour
-            text: '18:18'
-            color: 0,0,0,1 
-            font_size: '9pt'
-            text_size: self.size
-            valign: 'top'
-            halign: 'right'
-            
+            size: self.width - self.height/2.0 , self.height/2.0
+        Color:
+            rgba: 0, 0, 0, 1
 
-
-<Mymessage@BoxLayout>:
-    orientation: 'vertical'
-    padding:'60dp','10dp','10dp','10dp'
+<SendButton@BoxLayout>:
+    size_hint_x:None
     size_hint_y:None
-    height: self.ids.mes.height + self.ids.hourbox.height + 20
-    canvas:
-        Color: 
-            rgba:0.105, 0.227, 0.9, 1
-        Ellipse:
-            pos: self.x + 50, self.y+self.height/2.0 + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + 50, self.y + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + self.width - self.height/2.0,self.y + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Ellipse:
-            pos: self.x + self.width - self.height/2.0,self.y + self.height/2.0 + 5
-            size: self.height/2.0,self.height/2.0 - 10
-        Rectangle:
-            pos: self.x + 50, self.y + self.height/4.0 + 2
-            size:self.width-50,self.height/2.0 - 4
-        Rectangle:
-            pos: self.x + self.height/4.0 + 50, self.y + self.height/2.0 + 5
-            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
-        Rectangle:
-            pos: self.x + self.height/4.0 + 50, self.y + 5
-            size: self.width - self.height/2.0 - 50, self.height/2.0 - 10
-    
-    Label:
-        id:mes
-        text: "A" 
-        size_hint_y: None
-        height: self.texture_size[1]
-        text_size: self.width, None
-        halign: 'left'
-        valign: 'top'
-        font_size: '11pt'
-    BoxLayout:
-        id:hourbox
-        #padding: 0,0,20,10
-        size_hint_y: None
-        height: 20
-        Label:
-            id:hour
-            text: '18:18'
-            font_size: '9pt'
-            text_size: self.size
-            valign: 'top'
-            halign: 'right'
-            
+    height:sp(40)
+    width: self.height
+    padding: sp(2), sp(1), sp(1), sp(0) 
+    BtnSend:
+        on_release: app.root.current_screen.btn_send_clicked()
 
-<Servernots@BoxLayout>:
-    orientation: 'vertical'
-    padding:'60dp','10dp','10dp','10dp'
-    size_hint_y:None
-    height: self.ids.mes.height + 20
-    Label:
-        id:mes
-        text: "A"
-        size_hint_y: None
-        height: self.texture_size[1]
-        text_size: self.width, None
-        halign: 'center'
-        valign: 'middle'
-        font_size: '11pt'
-    
+<BtnSend@ButtonBehavior+Image>
+    source: './images/sends.ico'
+    size: self.norm_image_size

@@ -9,55 +9,83 @@ from datetime import datetime
 sys.path.append(os.path.abspath('../cryptography'))
 import symmetriccrypt
 import diffiehellman
+#disable kivy debug messages
+os.environ["KIVY_NO_CONSOLELOG"] = "1"
 #kivy classes to build interface
+from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.config import Config
-
-#load kvlang interface
-Builder.load_file("chat.kv")
-#wimdow size
-from kivy.config import Config
+#config wimdow size
 Config.set('graphics', 'width', '480')
 Config.set('graphics', 'height', '640')
-#interface
-class Servernots(BoxLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+#kivy classes manipulate window events
+from kivy.core.window import Window
+#load kvlang interface
+Builder.load_file("chat.kv")
 
-class Mymessage(BoxLayout):
+
+#interface
+class ServerNotifications(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
 class Message(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
 class MessageWithoutAuthor(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-class ChatPage(BoxLayout):
+class MyMessage(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+class MyMessageSequence(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
+class ChatPage(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.lastMessage_author = ""
+    
+    def on_pre_enter(self):
+        Window.bind(on_keyboard=self.send)
 
+    def on_pre_leave(self):
+        Window.unbind(on_keyboard=self.send)
+
+    def send(self, window, key, *args):
+        if key == 13 or key == 271:
+            self.btn_send_clicked()
+            return True
+        #if press ESC back => it only will be used if i implement multchanel
+        #elif key == :
+        #    App.get_running_app().root.transition.direction = 'down'
+        #    App.get_running_app().root.transition.duration = '0.5'
+        #    App.get_running_app().root.current = 'landingpage'
+    
     def btn_send_clicked(self, **kwargs):
-        kinput = self.ids.keyboard_inputs.text
+        kinput = self.ids.iptmes.ids.keyboard_inputs.text.strip()
         if kinput != "":
-            message = Mymessage()
+            if self.lastMessage_author == my_name:
+                message = MyMessage()
+            else:
+                message = MyMessageSequence()
             message.ids.mes.text = kinput
             message.ids.hour.text = "{}:{}".format(datetime.now().hour, datetime.now().minute)
             self.ids.messagesbox.add_widget(message)
-            self.ids.keyboard_inputs.text = ""
+            self.ids.iptmes.ids.keyboard_inputs.text = ""
             self.lastMessage_author = my_name
             #send message to server
             response = {"header": symmetriccrypt.encrypt(server_connection["common_secret"], "NM", "AES-128", "CBC").decode(),
                         "data": symmetriccrypt.encrypt(server_connection["common_secret"], kinput, "AES-128", "CBC").decode()}
             sock.send(json.dumps(response).encode())
+    
     def receive_chat_participants_message(self, received_message, **kwargs):
-
         if self.lastMessage_author == received_message[0]:
             message = MessageWithoutAuthor()
         else:
@@ -67,15 +95,39 @@ class ChatPage(BoxLayout):
         message.ids.mes.text = received_message[1] #message content
         message.ids.hour.text = received_message[2] #hour
         self.ids.messagesbox.add_widget(message)
+    
     def receive_server_nofication(self, notification, **kwargs):
-        message = Servernots()
+        message = ServerNotifications()
         message.ids.mes.text = notification
         self.ids.messagesbox.add_widget(message)
 
+class LandingPage(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def start_chat(self, button, **kwargs):
+        name = self.ids.myname.text
+        if name != "":
+            global my_name
+            my_name = name
+            App.get_running_app().root.transition.direction = 'up'
+            App.get_running_app().root.transition.duration = '0.5'
+            App.get_running_app().root.current = "chatpage"
+            #start thread
+            global thread
+            thread.start()
+
+class Manager(ScreenManager):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class MainApp(App):
-    def build(self):
-        self.chatpage = ChatPage()
-        return self.chatpage
+    def build(self, **kwargs):
+        super().__init__(**kwargs)
+        self.manager = Manager()
+        return self.manager
+
+
 ####################################################################################################
 
 #client server comunication protocol
@@ -123,11 +175,11 @@ def do_SDHN(conn, data):
     conn.send(json.dumps(response).encode())
 def do_SM(conn, data):
     data = symmetriccrypt.decrypt(server_connection["common_secret"], data["data"].encode(), "AES-128", "CBC").decode()
-    window.chatpage.receive_server_nofication(data)
+    window.manager.current_screen.receive_server_nofication(data)
 def do_OM(conn, data):
     data = symmetriccrypt.decrypt(server_connection["common_secret"], data["data"].encode(), "AES-128", "CBC").decode()
     data = data.split(";")
-    window.chatpage.receive_chat_participants_message(data)
+    window.manager.current_screen.receive_chat_participants_message(data)
 ####################################################################################################
 
 #selector function
@@ -155,6 +207,8 @@ def server_message_received(conn):
 
 #thread
 def thread_listen_connection(sock, selector):
+    #connect at server
+    sock.connect((HOST, PORT))
     #selector register socket
     selector.register(sock, selectors.EVENT_READ, server_message_received)
     #loop
@@ -170,21 +224,17 @@ def thread_listen_connection(sock, selector):
 server_connection = {"dh_handshake": False, "have_dh_parameters": False}
 if __name__ == "__main__":
     #my name
-    my_name = input("whats your name:")
+    my_name = ""
     #create selector
     selector = selectors.DefaultSelector()
     #create socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     HOST = 'localhost'      # server Address  
     PORT = 1235             # server port
-    #connect at server
-    sock.connect((HOST, PORT))
     #create thread 
     thread = threading.Thread(target=thread_listen_connection, args=[sock, selector], daemon=True, name="ListenServerConnectionsThread")
     lock = threading.Lock()
     #load imterface
     window = MainApp()
-    #start thread
-    thread.start()
     #application takes control of the MainThread
     window.run()
