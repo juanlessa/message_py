@@ -8,7 +8,7 @@
     BoxLayout:
         canvas:
             Color:
-                rgba:  7/255.0, 94/255.0, 84/255.0, 1
+                rgba:  25/255.0, 25/255.0, 80/255.0, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -67,7 +67,7 @@
 <BtnOk@ButtonBehavior+Label>
     canvas.before:
         Color:
-            rgba: 37/255.0, 211/255.0, 102/255.0, 1
+            rgba: 25/255.0, 25/255.0, 128/255.0, 1
         #left
         Ellipse:
             pos: self.x, self.y
@@ -87,16 +87,13 @@
         orientation: 'vertical'
         canvas:
             Color:
-                rgba: 1,1,1,0.4
+                rgba: 248/255.0,248/255.0,255/255.0,0.8
             Rectangle:
                 size: self.size
                 pos: self.pos
-            Rectangle:
-                size: self.size
-                pos: self.pos
-                source:'./images/background.jpg'
+
         # NavBar
-        #NavBar:
+        NavBar:
         # messages
         BoxLayout:
             ScrollView:
@@ -116,14 +113,14 @@
 <NavBar@BoxLayout>:
     canvas:
         Color: 
-            rgba: 7/255.0, 94/255.0, 84/255.0, 1
+            rgba: 25/255.0, 25/255.0, 80/255.0, 1
         Rectangle:
             size: self.size
             pos: self.pos
-        # Color:
-        #     rgba:0,0,0,1
-        # Line:
-        #     points: self.x, self.y, self.size[0], self.pos[1]
+        Color:
+            rgba:248/255.0,248/255.0,255/255.0,0.8
+        Line:
+            points: self.x, self.y, self.size[0], self.pos[1]
     
     size_hint_y:None
     height:50
@@ -298,7 +295,7 @@
         
         canvas.before:
             Color:
-                rgba: 220/255.0, 248/255.0, 198/255.0, 1
+                rgba: 25/255.0, 25/255.0, 112/255.0, 1
             #botton left
             Ellipse:
                 pos: self.x, self.y
@@ -331,7 +328,7 @@
         Label:
             id:mes
             text: "A"
-            color: 0,0,0,1 
+            color: 1,1,1,1 
             size_hint_y: None
             height: self.texture_size[1]
             text_size: self.width, None
@@ -341,7 +338,7 @@
         Label:
             id:hour
             text: '18:18'
-            color: 0,0,0,1 
+            color: 1,1,1,1 
             size_hint_y: None
             height: self.texture_size[1]
             text_size: self.width, None
@@ -366,7 +363,7 @@
         
         canvas.before:
             Color:
-                rgba: 220/255.0, 248/255.0, 198/255.0, 1
+                rgba: 25/255.0, 25/255.0, 112/255.0, 1
             #botton left
             Ellipse:
                 pos: self.x, self.y
@@ -400,7 +397,7 @@
         Label:
             id:mes
             text: "A"
-            color: 0,0,0,1 
+            color: 1,1,1,1 
             size_hint_y: None
             height: self.texture_size[1]
             text_size: self.width, None
@@ -410,7 +407,7 @@
         Label:
             id:hour
             text: '18:18'
-            color: 0,0,0,1 
+            color: 1,1,1,1 
             size_hint_y: None
             height: self.texture_size[1]
             text_size: self.width, None
@@ -540,5 +537,5 @@
         on_release: app.root.current_screen.btn_send_clicked()
 
 <BtnSend@ButtonBehavior+Image>
-    source: './images/sends.ico'
+    source: './images/send.png'
     size: self.norm_image_size
