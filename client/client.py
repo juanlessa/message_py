@@ -26,7 +26,6 @@ from kivy.core.window import Window
 #load kvlang interface
 Builder.load_file("chat.kv")
 
-
 #interface
 class ServerNotifications(BoxLayout):
     def __init__(self, **kwargs):
