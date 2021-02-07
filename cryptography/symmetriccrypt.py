@@ -12,8 +12,6 @@ from cryptography.hazmat.primitives.ciphers import modes
 from cryptography.hazmat.backends import default_backend
 
 
-
-
 def addPadding(messageBlock: bytes, algorithm_name: str) -> bytes:
     """
     function that adds padding to a message block.
