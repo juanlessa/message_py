@@ -140,8 +140,6 @@ def read(conn, mask):
        
 ####################################################################################################
 
-
-
 def accept(sock, mask):
     conn, addr = sock.accept()  # Should be ready
     conn.setblocking(False)
