@@ -1,0 +1,16 @@
+certifi==2020.12.5
+cffi==1.14.5
+chardet==4.0.0
+cryptography==3.4.4
+docutils==0.16
+flake8==3.8.4
+idna==2.10
+Kivy==2.0.0
+Kivy-Garden==0.1.4
+mccabe==0.6.1
+pycodestyle==2.6.0
+pycparser==2.20
+pyflakes==2.2.0
+Pygments==2.7.4
+requests==2.25.1
+urllib3==1.26.3
