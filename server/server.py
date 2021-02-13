@@ -5,10 +5,9 @@ import selectors
 import logging
 import json
 import datetime
-sys.path.append(os.path.abspath('../cryptography'))
+sys.path.append(os.path.abspath('../cryptography/'))
 import symmetriccrypt
 import diffiehellman
-import time
 
 #logger settings
 #instantiate a logger object
