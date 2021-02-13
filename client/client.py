@@ -9,21 +9,21 @@ from datetime import datetime
 sys.path.append(os.path.abspath('../cryptography'))
 import symmetriccrypt
 import diffiehellman
-#disable kivy debug messages
+# disable kivy debug messages
 os.environ["KIVY_NO_CONSOLELOG"] = "1"
-#kivy classes to build interface
+# kivy classes to build interface
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.config import Config
-#config wimdow size
+# config wimdow size
 Config.set('graphics', 'width', '480')
 Config.set('graphics', 'height', '640')
-#kivy classes manipulate window events
+# kivy classes manipulate window events
 from kivy.core.window import Window
-#load kvlang interface
+# load kvlang interface
 Builder.load_file("chat.kv")
 
 #interface
