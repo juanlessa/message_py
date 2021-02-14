@@ -1,32 +1,41 @@
-import sys
+
+from datetime import datetime
+import json
 import os
 import selectors
 import socket
+import sys
 import threading
-import json
-from datetime import datetime
-#cryptography methods
-sys.path.append(os.path.abspath('../cryptography'))
-import symmetriccrypt
-import diffiehellman
+
 # disable kivy debug messages
 os.environ["KIVY_NO_CONSOLELOG"] = "1"
-# kivy classes to build interface
+
+# import kivy classes to build interface
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.config import Config
+
 # config wimdow size
 Config.set('graphics', 'width', '480')
 Config.set('graphics', 'height', '640')
+
 # kivy classes manipulate window events
 from kivy.core.window import Window
+
+# cryptography methods
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'cryptography')))
+import symmetriccrypt
+import diffiehellman
+
+
 # load kvlang interface
 Builder.load_file("chat.kv")
 
-#interface
+# interface
 class ServerNotifications(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -61,11 +70,11 @@ class ChatPage(Screen):
         if key == 13 or key == 271:
             self.btn_send_clicked()
             return True
-        #if press ESC back => it only will be used if i implement multchanel
-        #elif key == :
-        #    App.get_running_app().root.transition.direction = 'down'
-        #    App.get_running_app().root.transition.duration = '0.5'
-        #    App.get_running_app().root.current = 'landingpage'
+        # if press ESC back => it only will be used if i implement multchanel
+        # elif key == :
+        #     App.get_running_app().root.transition.direction = 'down'
+        #     App.get_running_app().root.transition.duration = '0.5'
+        #     App.get_running_app().root.current = 'landingpage'
     
     def btn_send_clicked(self, **kwargs):
         kinput = self.ids.iptmes.ids.keyboard_inputs.text.strip()
@@ -75,7 +84,7 @@ class ChatPage(Screen):
             else:
                 message = MyMessageSequence()
             message.ids.mes.text = kinput
-            message.ids.hour.text = "{}:{}".format(datetime.now().hour, datetime.now().minute)
+            message.ids.hour.text = "{:0>2}:{:0>2}".format(datetime.now().hour, datetime.now().minute)
             self.ids.messagesbox.add_widget(message)
             self.ids.iptmes.ids.keyboard_inputs.text = ""
             self.lastMessage_author = my_name
@@ -129,7 +138,7 @@ class MainApp(App):
 
 ####################################################################################################
 
-#client server comunication protocol
+# client server comunication protocol
 """
 protocol
 messages from client to server:
