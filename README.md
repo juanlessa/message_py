@@ -31,15 +31,21 @@ to start client running in background. You can run this code as much as you want
 to start server.
 8. fill in the name of each client, click Ok and enjoy.  
 
-**OBS:** I like to start running the clients in background and then run server in foreground to use only one terminal. But doing like me, is important fill in the name of clients only after start server.  
-**OBS 2:** Run
+**OBS 1:** I like to start running the clients in background and then run server in foreground to use only one terminal. But doing like me, is important fill in the name of clients only after start server.  
+**OBS 2:** You can run
     $ deactivate,
 To stop python virtual environment.  
-**OBS 3:**
 
 ## Distributed Systems
+I developed client-server comunication with "Socket" and "Selectors" python modules.
+
 ## Cryptography
-**Note:** 
+For doing this i developed some cryptography methods keeped on "cryptography" folder, I used "cryptography" python module.  
+**Note:** This methods is not secure.
+
 ## Graphic Interface
+I developed client interface with "Kivy" python module.
 ![landing page image exemple](client/images/landingpage.png) ![chat page image exemple](client/images/chatpage.png)
+**Image 1** - Initial page.  
+**Image 2** - Chat page.
 
