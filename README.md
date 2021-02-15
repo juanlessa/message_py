@@ -8,9 +8,8 @@ the initial purpose of this project was to put my knowledge into practice about 
 ## Solution
 I developed a chat that consists of one server and multiple clients. Each client is a application with a graphical interface. Finally every message between client and server are ciphed.
 
-<img align="right" width="100" height="100" src="http://www.fillmurray.com/100/100">
+<img align="center" width="246" height="384" alt="" src="client/images/conversation.png">
 
-![conversation image exemple](client/images/conversation.png)
 ## setup
 To run and test this solution you need:
 1. Clone this repository.
