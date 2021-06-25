@@ -41,7 +41,7 @@ I developed client-server comunication with "Socket" and "Selectors" python modu
 
 ## Cryptography
 For doing this i developed some cryptography methods keeped on "cryptography" folder, I used "cryptography" python module.  
-**Note:** This methods is not secure.
+**Note:** I developed this methods to study, then you should not use it in real scenary.
 
 ## Graphic Interface
 I developed client interface with "Kivy" python module.
